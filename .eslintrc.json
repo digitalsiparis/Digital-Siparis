@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "extends": ["next/core-web-vitals"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    // İstersen katı kuralları burada açabilirsin
+  }
+}

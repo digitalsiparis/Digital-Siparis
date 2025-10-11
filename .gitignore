@@ -1,0 +1,17 @@
+﻿# dependencies
+node_modules/
+.pnpm-store/
+
+# next
+.next/
+out/
+.vercel/
+
+# env & logs
+.env
+.env.*
+*.log
+
+# misc
+.DS_Store
+Thumbs.db

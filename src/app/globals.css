@@ -1,7 +1,8 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Global base stiller */
 html, body { height: 100%; }
 body { background: #f8fafc; color: #0f172a; }
+

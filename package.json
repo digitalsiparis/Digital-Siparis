@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "preinstall": "corepack enable",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -22,6 +23,6 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^5.4.0"
   },
-  "engines": { "node": ">=20" },
-  "packageManager": "pnpm@9"
+  "engines": { "node": "20.x" },
+  "packageManager": "pnpm@9.0.0"
 }

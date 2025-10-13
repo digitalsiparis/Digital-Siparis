@@ -1,0 +1,4 @@
+import React,{useState} from "react"; import client from "../api/client"; import Protected from "../components/Protected";
+export default function AdminDashboard(){ const [title,setTitle]=useState(""); const [price,setPrice]=useState<number>(0);
+  const createProduct=async()=>{await client.post("/admin/product",{title,price,stock:100,slug:title.toLowerCase().replace(/\s+/g,"-")}); alert("Ürün eklendi");};
+  return (<Protected><div className="container"><h1>Admin</h1><div className="card" style={{display:"grid",gap:8,maxWidth:420}}><input placeholder="Ürün adı" value={title} onChange={e=>setTitle(e.target.value)}/><input placeholder="Fiyat" type="number" value={price} onChange={e=>setPrice(parseFloat(e.target.value||"0"))}/><button className="btn" onClick={createProduct}>Ürün Oluştur</button></div></div></Protected>); }

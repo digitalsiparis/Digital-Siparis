@@ -1,0 +1,5 @@
+import React,{useState} from "react"; import AddressForm from "../components/AddressForm"; import OrderSummary from "../components/OrderSummary"; import {useCart} from "../context/CartContext"; import client from "../api/client"; import Protected from "../components/Protected";
+export default function CheckoutPage(){ const {items,total,clear}=useCart(); const [address,setAddress]=useState<any>(null); const [ordId,setOrdId]=useState<string>("");
+  const placeOrder=async()=>{const {data}=await client.post("/orders",{items,address}); setOrdId(data.id); clear();};
+  if(!items.length && !ordId) return <div className="container"><p>Sepet boş.</p></div>;
+  return (<Protected><div className="container"><h1>Ödeme</h1>{!ordId?(<div className="grid" style={{gridTemplateColumns:"1fr 1fr"}}><div><h3>Adres</h3><AddressForm onSaved={setAddress}/><div style={{marginTop:12}}><button className="btn" onClick={placeOrder} disabled={!address || !items.length}>Siparişi Oluştur ({total.toFixed(2)} ₺)</button></div></div><OrderSummary/></div>):(<div className="card"><h2>Sipariş oluşturuldu</h2><p>Sipariş No: {ordId}</p></div>)}</div></Protected>); }

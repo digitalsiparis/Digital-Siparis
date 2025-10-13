@@ -1,0 +1,2 @@
+import React from "react"; import {useCart} from "../context/CartContext";
+export default function OrderSummary(){ const {items,total}=useCart(); return (<div className="card"><h3>Özet</h3>{items.map(i=>(<div key={i.product_id} style={{display:"flex",justifyContent:"space-between"}}><span>{i.title} × {i.qty}</span><span>{(i.price*i.qty).toFixed(2)} ₺</span></div>))}<hr/><div style={{display:"flex",justifyContent:"space-between",fontWeight:"bold"}}><span>Toplam</span><span>{total.toFixed(2)} ₺</span></div></div>); }

@@ -1,0 +1,20 @@
+{
+  "search.placeholder": "Ürün, mağaza ara…",
+  "filters.price_min": "Min",
+  "filters.price_max": "Maks",
+  "filters.sort": "Sırala",
+  "filters.apply": "Uygula",
+  "home.categories": "Kategoriler",
+  "orders.title": "Siparişler",
+  "orders.status": "Durum",
+  "orders.date": "Tarih",
+  "orders.clear": "Temizle",
+  "form.title": "Başlık",
+  "form.price": "Fiyat",
+  "form.stock": "Stok",
+  "form.images": "Görseller",
+  "form.variants": "Varyantlar",
+  "form.add_variant": "Varyant Ekle",
+  "theme.dark": "Koyu",
+  "theme.light": "Açık"
+}

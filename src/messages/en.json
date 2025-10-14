@@ -1,0 +1,20 @@
+{
+  "search.placeholder": "Search products, stores…",
+  "filters.price_min": "Min",
+  "filters.price_max": "Max",
+  "filters.sort": "Sort",
+  "filters.apply": "Apply",
+  "home.categories": "Categories",
+  "orders.title": "Orders",
+  "orders.status": "Status",
+  "orders.date": "Date",
+  "orders.clear": "Clear",
+  "form.title": "Title",
+  "form.price": "Price",
+  "form.stock": "Stock",
+  "form.images": "Images",
+  "form.variants": "Variants",
+  "form.add_variant": "Add Variant",
+  "theme.dark": "Dark",
+  "theme.light": "Light"
+}

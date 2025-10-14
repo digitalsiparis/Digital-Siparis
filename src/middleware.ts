@@ -1,12 +1,11 @@
 import createMiddleware from 'next-intl/middleware';
-import {locales} from './lib/i18n';
 
 export default createMiddleware({
-  locales,
+  locales: ['tr', 'en'],
   defaultLocale: 'tr',
-  localePrefix: 'as-needed'
+  localePrefix: 'as-needed' // URL'e /tr eklemeden de çalışsın
 });
 
 export const config = {
-  matcher: ['/((?!_next|api|.*\\..*).*)']
+  matcher: ['/', '/(tr|en)/:path*']
 };

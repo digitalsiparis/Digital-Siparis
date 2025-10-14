@@ -1,35 +1,39 @@
-export type Product = {
-  id: string; slug: string; title: string; price: number; currency: string;
-  images: string[]; category?: string; vendorSlug?: string; stock?: number;
+// basit fetcher + mock fallback
+const API = process.env.NEXT_PUBLIC_API_URL ?? "";
+
+async function http<T>(path: string, init?: RequestInit): Promise<T> {
+  const url = API ? `${API}${path}` : path;
+  try {
+    const res = await fetch(url, { next: { revalidate: 60 }, ...init });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json() as Promise<T>;
+  } catch {
+    // Mock fallback (API hazır olana kadar)
+    if (path.startsWith("/v1/products")) {
+      // /v1/products or /v1/products/[slug]
+      const mock = [
+        { id: "p1", slug: "telefon-x", title: "Telefon X", price: 12999, image: "/mock/phone.jpg", vendor: { slug:"magaza-ali", name:"Mağaza Ali" } },
+        { id: "p2", slug: "kulaklik-pro", title: "Kulaklık Pro", price: 1999, image: "/mock/headset.jpg", vendor: { slug:"ses-market", name:"Ses Market" } },
+      ];
+      if (path.includes("?")) return mock as any;
+      const slug = path.split("/").pop();
+      return (mock.find(m => m.slug === slug) ?? mock[0]) as any;
+    }
+    if (path.startsWith("/v1/vendors/")) {
+      const slug = path.split("/").pop();
+      return {
+        slug, name: slug?.replace("-", " ").toUpperCase(), rating: 4.7,
+        products: [
+          { id:"p1", slug:"telefon-x", title:"Telefon X", price:12999, image:"/mock/phone.jpg" }
+        ]
+      } as any;
+    }
+    throw new Error("Mock yok");
+  }
+}
+
+export const api = {
+  listProducts: (q = "") => http<any[]>("/v1/products" + (q ? `?q=${encodeURIComponent(q)}`:"")),
+  getProduct: (slug: string) => http<any>(`/v1/products/${slug}`),
+  getVendor:  (slug: string) => http<any>(`/v1/vendors/${slug}`),
 };
-
-export type ListProductsInput = {
-  q?: string; min?: number; max?: number; sort?: 'price_asc'|'price_desc'|'newest';
-  category?: string; page?: number; perPage?: number;
-};
-
-export function buildProductsQuery(params: ListProductsInput = {}): string {
-  const qs = new URLSearchParams();
-  (Object.entries(params) as [keyof ListProductsInput, any][])
-    .forEach(([k,v])=>{ if (v === undefined || v === null || v === '') return; qs.set(String(k), String(v)); });
-  return qs.toString();
-}
-
-export async function listProducts(params: ListProductsInput = {}){
-  const qs = buildProductsQuery(params);
-  const r = await fetch(`/api/v1/products?${qs}`, {cache:'no-store'});
-  if (!r.ok) throw new Error('listProducts failed');
-  return r.json();
-}
-
-export async function getProduct(slug: string){
-  const r = await fetch(`/api/v1/products/${slug}`, {cache:'no-store'});
-  if (!r.ok) throw new Error('getProduct failed');
-  return r.json();
-}
-
-export async function getVendor(slug: string){
-  const r = await fetch(`/api/v1/vendors/${slug}`, {cache:'no-store'});
-  if (!r.ok) throw new Error('getVendor failed');
-  return r.json();
-}

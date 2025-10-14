@@ -1,23 +1,32 @@
-import '../globals.css';
-import {getMessages, getLocale} from 'next-intl/server';
-import Providers from '@/src/app/providers';
-import type {Metadata} from 'next';
-import React from 'react';
+import type { Metadata } from "next";
+import Link from "next/link";
+import "../globals.css";
 
 export const metadata: Metadata = {
-  title: 'Digital Sipariş – Mağaza',
-  description: 'Çok satıcılı pazar yeri',
-  openGraph: {title:'Digital Sipariş', description:'Çok satıcılı pazar yeri'}
+  title: "Digital Sipariş — Shop",
+  description: "Müşteri tarafı mağaza arayüzü",
 };
 
-export default async function ShopLayout({children}:{children:React.ReactNode}){
-  const messages = await getMessages();
-  const locale = await getLocale();
+export default function ShopLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground">
-        <Providers messages={messages}>{children}</Providers>
-      </body>
-    </html>
+    <div className="min-h-screen flex flex-col">
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b">
+        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center gap-6">
+          <Link href="/" className="text-xl font-semibold">Digital Sipariş</Link>
+          <nav className="ml-auto flex items-center gap-4 text-sm">
+            <Link href="/" className="hover:text-blue-600">Ana Sayfa</Link>
+            <Link href="/products/example-urun" className="hover:text-blue-600">Ürünler</Link>
+            <Link href="/vendors/ornek-marka" className="hover:text-blue-600">Markalar</Link>
+            <Link href="/cart" className="hover:text-blue-600">Sepet</Link>
+          </nav>
+        </div>
+      </header>
+      <main className="mx-auto w-full max-w-6xl px-4 py-8 flex-1">{children}</main>
+      <footer className="border-t bg-slate-50">
+        <div className="mx-auto max-w-6xl px-4 py-6 text-xs text-slate-500">
+          © {new Date().getFullYear()} Digital Sipariş
+        </div>
+      </footer>
+    </div>
   );
 }

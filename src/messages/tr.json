@@ -1,4 +1,6 @@
 {
+  "Dashboard.title": "Gösterge Paneli",
+  "Common.open": "Aç"
   "search.placeholder": "Ürün, mağaza ara…",
   "filters.price_min": "Min",
   "filters.price_max": "Maks",

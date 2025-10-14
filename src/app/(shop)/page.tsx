@@ -1,68 +1,44 @@
-import Link from 'next/link';
-import {listProducts} from '@/src/lib/api';
+import Link from "next/link";
 
-export default async function Home({searchParams}:{searchParams:{q?:string;min?:string;max?:string;sort?:string;page?:string}}){
-  const {q,min,max,sort,page} = searchParams;
-  const data = await listProducts({q, min:min?Number(min):undefined, max:max?Number(max):undefined, sort:sort as any, page:page?Number(page):1, perPage:24});
-  const categories = data.categories ?? [
-    {slug:'elektronik', name:'Elektronik', image:'/mock/cat-elektronik.webp'},
-    {slug:'moda', name:'Moda', image:'/mock/cat-moda.webp'},
-    {slug:'3d', name:'3D Yazıcılar', image:'/mock/cat-3d.webp'}
+export default function ShopHome() {
+  const featured = [
+    { slug: "kahve-makinesi-pro", title: "Kahve Makinesi Pro", price: 3499, image: "/placeholder.svg" },
+    { slug: "airpods-lite",       title: "AirPods Lite",        price: 2299, image: "/placeholder.svg" },
+    { slug: "robot-supurge-x",    title: "Robot Süpürge X",     price: 8999, image: "/placeholder.svg" },
   ];
+
   return (
-    <main className="space-y-8">
-      {/* Search */}
-      <form action="/" className="mx-auto max-w-3xl p-1 rounded-2xl border flex gap-2">
-        <input name="q" defaultValue={q} placeholder="Ürün, mağaza ara…" className="flex-1 p-3 bg-transparent outline-none"/>
-        <input type="number" name="min" defaultValue={min} placeholder="Min" className="w-24 p-3 bg-transparent outline-none"/>
-        <input type="number" name="max" defaultValue={max} placeholder="Maks" className="w-24 p-3 bg-transparent outline-none"/>
-        <select name="sort" defaultValue={sort||''} className="p-3 bg-transparent">
-          <option value="">Sırala</option>
-          <option value="price_asc">Fiyat ↑</option>
-          <option value="price_desc">Fiyat ↓</option>
-          <option value="newest">En yeni</option>
-        </select>
-        <button className="px-4 py-2 rounded-xl border">Ara</button>
-      </form>
+    <section className="space-y-10">
+      <div className="rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-8">
+        <h1 className="text-3xl font-semibold">Hoş geldiniz 👋</h1>
+        <p className="mt-2 text-white/80">Yeni sezon fırsatları burada. Popüler ürünleri keşfedin.</p>
+        <div className="mt-6 flex gap-3">
+          <Link href="/products/example-urun" className="px-4 py-2 bg-white text-blue-700 rounded-lg text-sm font-medium">Ürünlere Git</Link>
+          <Link href="/vendors/ornek-marka" className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-sm">Markaları Keşfet</Link>
+        </div>
+      </div>
 
-      {/* Category Strips */}
-      <section className="container mx-auto">
-        <h2 className="text-xl font-semibold mb-3">Kategoriler</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.map((c:any)=> (
-            <Link key={c.slug} href={`/category/${c.slug}`} className="group overflow-hidden rounded-2xl border">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={c.image} alt={c.name} className="h-28 w-full object-cover group-hover:scale-105 transition"/>
-              <div className="p-2 text-center text-sm">{c.name}</div>
-            </Link>
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Öne Çıkanlar</h2>
+          <Link href="/products/example-urun" className="text-sm text-blue-600 hover:underline">Tümünü Gör</Link>
+        </div>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {featured.map((p) => (
+            <li key={p.slug} className="rounded-xl border bg-white">
+              <Link href={`/products/${p.slug}`} className="block p-4">
+                <div className="aspect-[4/3] rounded-lg bg-slate-100 grid place-items-center text-slate-400">
+                  800×600
+                </div>
+                <div className="mt-3">
+                  <div className="font-medium">{p.title}</div>
+                  <div className="text-blue-600 font-semibold">{p.price.toLocaleString("tr-TR")} TL</div>
+                </div>
+              </Link>
+            </li>
           ))}
-        </div>
-      </section>
-
-      {/* Products grid */}
-      <section className="container mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data.items?.map((p:any)=> (
-            <Link key={p.id} href={`/products/${p.slug}`} className="rounded-2xl border overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.images?.[0]||'/mock/placeholder.webp'} alt={p.title} className="h-48 w-full object-cover" />
-              <div className="p-3">
-                <div className="line-clamp-2 text-sm mb-1">{p.title}</div>
-                <div className="font-semibold">{p.price} {p.currency||'₺'}</div>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {/* Paging */}
-        <div className="flex justify-center gap-2 mt-6">
-          {Array.from({length: data.totalPages||1}, (_,i)=>{
-            const n = i+1; const sp = new URLSearchParams();
-            if (q) sp.set('q', q); if (min) sp.set('min',min); if (max) sp.set('max',max); if (sort) sp.set('sort',sort as string); sp.set('page', String(n));
-            return <Link key={n} href={`/?${sp.toString()}`} className={`px-3 py-1 rounded-xl border ${Number(page||1)===n?'font-bold':''}`}>{n}</Link>
-          })}
-        </div>
-      </section>
-    </main>
+        </ul>
+      </div>
+    </section>
   );
 }

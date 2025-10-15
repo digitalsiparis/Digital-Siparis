@@ -1,7 +1,8 @@
 "use client";
+
 import Link from "next/link";
-import { useMemo } from "react";
-import type { ComponentType, SVGProps } from "react";
+import { useMemo, type ComponentType } from "react";
+import type { SVGProps } from "react";
 import {
   LayoutDashboard,
   Activity,
@@ -29,53 +30,60 @@ import {
   Sparkles,
   GraduationCap,
   Bell,
-  LogOut,
+  LogOut
 } from "lucide-react";
+
+type NavItem = {
+  key: string;
+  label: string;
+  href: string;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  badge?: string;
+};
 
 export default function VendorDashboard() {
   const metrics = {
     ordersPending: 8,
     liveSupportUnread: 2,
     ordersRecent: 31,
-    followers: 3,
+    followers: 3
   } as const;
 
-  const items = useMemo(
-    () =>
-      [
-        { key: "panel", label: "Gösterge Paneli", href: "/partner/dashboard", icon: LayoutDashboard },
-        { key: "status", label: "Güncel Durum", href: "/partner/status", icon: Activity },
-        { key: "products", label: "Ürünler", href: "/partner/products", icon: PackageSearch },
-        { key: "orders", label: "Siparişler", href: "/partner/orders", icon: ShoppingCart, badge: String(metrics.ordersPending) },
-        { key: "withdraw", label: "Para Çekme", href: "/partner/withdraw", icon: Wallet },
+  const items: NavItem[] = useMemo(
+    () => [
+      { key: "panel", label: "Gösterge Paneli", href: "/partner/dashboard", icon: LayoutDashboard },
+      { key: "status", label: "Güncel Durum", href: "/partner/status", icon: Activity },
+      { key: "products", label: "Ürünler", href: "/partner/products", icon: PackageSearch },
+      { key: "orders", label: "Siparişler", href: "/partner/orders", icon: ShoppingCart, badge: String(metrics.ordersPending) },
+      { key: "withdraw", label: "Para Çekme", href: "/partner/withdraw", icon: Wallet },
 
-        { key: "gib", label: "GİB Ayarları", href: "/partner/gib", icon: FileCog },
-        { key: "reports", label: "Raporlar", href: "/partner/reports", icon: BarChart3 },
-        { key: "product-support", label: "Ürün Destekleri", href: "/partner/product-support", icon: LifeBuoy },
-        { key: "reviews", label: "Yorumlarım", href: "/partner/reviews", icon: MessageSquareText },
-        { key: "qa", label: "Soru Cevaplarım", href: "/partner/questions", icon: HelpCircle },
+      { key: "gib", label: "GİB Ayarları", href: "/partner/gib", icon: FileCog },
+      { key: "reports", label: "Raporlar", href: "/partner/reports", icon: BarChart3 },
+      { key: "product-support", label: "Ürün Destekleri", href: "/partner/product-support", icon: LifeBuoy },
+      { key: "reviews", label: "Yorumlarım", href: "/partner/reviews", icon: MessageSquareText },
+      { key: "qa", label: "Soru Cevaplarım", href: "/partner/questions", icon: HelpCircle },
 
-        { key: "refund", label: "İptal / İade", href: "/partner/refunds", icon: RotateCcw },
-        { key: "score", label: "Mağaza Puanım", href: "/partner/store-score", icon: Star },
-        { key: "brand-docs", label: "Marka Belgelerim", href: "/partner/brand-docs", icon: BadgeCheck },
-        { key: "brand-owner", label: "Marka Sahibi Portalı", href: "/partner/brand-owner", icon: Crown },
-        { key: "live", label: "Canlı Destek", href: "/partner/live", icon: Headphones, badge: String(metrics.liveSupportUnread) },
+      { key: "refund", label: "İptal / İade", href: "/partner/refunds", icon: RotateCcw },
+      { key: "score", label: "Mağaza Puanım", href: "/partner/store-score", icon: Star },
+      { key: "brand-docs", label: "Marka Belgelerim", href: "/partner/brand-docs", icon: BadgeCheck },
+      { key: "brand-owner", label: "Marka Sahibi Portalı", href: "/partner/brand-owner", icon: Crown },
+      { key: "live", label: "Canlı Destek", href: "/partner/live", icon: Headphones, badge: String(metrics.liveSupportUnread) },
 
-        { key: "api-calls", label: "API Çağrılarım", href: "/partner/api/calls", icon: Braces },
-        { key: "api-access", label: "API Erişim Talebi", href: "/partner/api/access", icon: Plug },
-        { key: "campaigns", label: "Kampanyalar", href: "/partner/campaigns", icon: Megaphone },
-        { key: "ads", label: "Reklamlar", href: "/partner/ads", icon: Tag },
-        { key: "coupons", label: "Kuponlar", href: "/partner/coupons", icon: Percent },
+      { key: "api-calls", label: "API Çağrılarım", href: "/partner/api/calls", icon: Braces },
+      { key: "api-access", label: "API Erişim Talebi", href: "/partner/api/access", icon: Plug },
+      { key: "campaigns", label: "Kampanyalar", href: "/partner/campaigns", icon: Megaphone },
+      { key: "ads", label: "Reklamlar", href: "/partner/ads", icon: Tag },
+      { key: "coupons", label: "Kuponlar", href: "/partner/coupons", icon: Percent },
 
-        { key: "profit", label: "Kârlılık", href: "/partner/profit", icon: PieChart },
-        { key: "import", label: "Ürün Çek", href: "/partner/import", icon: DownloadCloud },
-        { key: "sla", label: "SLA & Kargo", href: "/partner/sla-shipping", icon: Truck },
-        { key: "score2", label: "Ürün Skoru", href: "/partner/product-score", icon: Sparkles },
-        { key: "edu", label: "Eğitim", href: "/partner/edu", icon: GraduationCap },
+      { key: "profit", label: "Kârlılık", href: "/partner/profit", icon: PieChart },
+      { key: "import", label: "Ürün Çek", href: "/partner/import", icon: DownloadCloud },
+      { key: "sla", label: "SLA & Kargo", href: "/partner/sla-shipping", icon: Truck },
+      { key: "score2", label: "Ürün Skoru", href: "/partner/product-score", icon: Sparkles },
+      { key: "edu", label: "Eğitim", href: "/partner/edu", icon: GraduationCap },
 
-        { key: "bulletins", label: "Duyurular", href: "/partner/announcements", icon: Bell },
-        { key: "logout", label: "Çıkış", href: "/logout", icon: LogOut },
-      ] as const,
+      { key: "bulletins", label: "Duyurular", href: "/partner/announcements", icon: Bell },
+      { key: "logout", label: "Çıkış", href: "/logout", icon: LogOut }
+    ],
     [metrics.liveSupportUnread, metrics.ordersPending]
   );
 
@@ -83,7 +91,7 @@ export default function VendorDashboard() {
     <section className="space-y-6 p-6">
       <VendorHeader followers={metrics.followers} recentOrders={metrics.ordersRecent} />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {items.map((it) => (
+        {items.map(it => (
           <CardLink key={it.key} href={it.href} label={it.label} Icon={it.icon} badge={it.badge} />
         ))}
       </div>
@@ -115,7 +123,7 @@ function CardLink({
   href,
   label,
   Icon,
-  badge,
+  badge
 }: {
   href: string;
   label: string;

@@ -1,5 +1,4 @@
-import {listProducts} from '@/src/lib/api';
-
+import {listProducts} from '@/lib/api';
 export default async function CategoryPage({params, searchParams}:{params:{slug:string}, searchParams:{page?:string; sort?:string}}){
   const data = await listProducts({category: params.slug, page: searchParams.page?Number(searchParams.page):1, sort: searchParams.sort as any});
   return (

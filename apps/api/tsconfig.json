@@ -1,0 +1,25 @@
+﻿{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    // ÖNEMLİ: rootDir monorepo kökü
+    "rootDir": "../../",
+    // Çıktıyı bu projeye ait dist altına aynalayacağız
+    "outDir": "./dist",
+
+    "baseUrl": ".",
+    "paths": {
+      "@db/*": ["../../packages/db/src/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "../../packages/db/src/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

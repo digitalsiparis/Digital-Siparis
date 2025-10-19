@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: ds_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ds
+      POSTGRES_PASSWORD: ds
+      POSTGRES_DB: ds_core
+    ports: ["5432:5432"]
+    volumes:
+      - ds_pgdata:/var/lib/postgresql/data
+
+  # İsteğe bağlı: pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: ds_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports: ["5050:80"]
+    depends_on: [db]
+
+volumes:
+  ds_pgdata:

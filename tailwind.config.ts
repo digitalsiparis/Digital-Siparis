@@ -1,4 +1,4 @@
-﻿import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss";
 
 export default {
   content: [
@@ -8,7 +8,7 @@ export default {
   ],
   theme: {
     extend: {
-      // markaya Ã¶zel renk/typography geniÅŸletmelerini buraya ekleriz
+      // markaya özel renk/typography genişletmelerini buraya ekleriz
     }
   },
   plugins: [],

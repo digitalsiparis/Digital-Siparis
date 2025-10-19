@@ -1,32 +1,31 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import "./globals.css";
+import Header from "@/components/layout/Header";
+import { Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Digital Sipariş — Shop",
-  description: "Müşteri tarafı mağaza arayüzü",
+  title: { default: "Digital Sipariş", template: "%s — Digital Sipariş" },
+  description: "Digital Sipariş mağaza arayüzü",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr">
-      <body>
+      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
         <div className="min-h-screen flex flex-col">
-          <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b">
-            <div className="mx-auto max-w-6xl px-4 py-3 flex items-center gap-6">
-              <Link href="/" className="text-xl font-semibold">Digital Sipariş</Link>
-              <nav className="ml-auto flex items-center gap-4 text-sm">
-                <Link href="/" className="hover:text-blue-600">Ana Sayfa</Link>
-                <Link href="/products/example-urun" className="hover:text-blue-600">Ürünler</Link>
-                <Link href="/vendors/ornek-marka" className="hover:text-blue-600">Markalar</Link>
-                <Link href="/cart" className="hover:text-blue-600">Sepet</Link>
-              </nav>
-            </div>
-          </header>
-          <main className="mx-auto w-full max-w-6xl px-4 py-8 flex-1">{children}</main>
-          <footer className="border-t bg-slate-50">
-            <div className="mx-auto max-w-6xl px-4 py-6 text-xs text-slate-500">
-              © {new Date().getFullYear()} Digital Sipariş
+          <Header />
+
+          <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 lg:px-6">
+            {children}
+          </main>
+
+          <footer className="border-t bg-white">
+            <div className="mx-auto w-full max-w-7xl px-4 py-6 text-xs text-slate-500 flex items-center justify-between">
+              <span>© {new Date().getFullYear()} Digital Sipariş</span>
+              <span className="inline-flex items-center gap-1">
+                <Sparkles className="size-4" />
+                Modern e-ticaret arayüzü
+              </span>
             </div>
           </footer>
         </div>

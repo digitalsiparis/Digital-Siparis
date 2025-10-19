@@ -1,17 +1,40 @@
-export type CartItem = { id:string; slug:string; title:string; price:number; qty:number; image?:string };
-const KEY = "ds_cart_v1";
+"use server";
 
-export function getCart(): CartItem[] {
-  if (typeof window === "undefined") return [];
-  try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { return []; }
-}
-export function setCart(items: CartItem[]) { if (typeof window !== "undefined") localStorage.setItem(KEY, JSON.stringify(items)); }
+import { cookies } from "next/headers";
 
-export function addToCart(item: CartItem) {
-  const list = getCart();
-  const i = list.findIndex(x => x.id === item.id);
-  if (i >= 0) list[i].qty += item.qty; else list.push(item);
-  setCart(list);
+const CART_COOKIE = "ds_cart_id";
+const API_URL = process.env.WC_API_URL || "https://digitalsiparis.com/wp-json/wc/store/v1";
+
+async function getCartFromWoo() {
+  const res = await fetch(`${API_URL}/cart`, { cache: "no-store", credentials: "include" });
+  if (!res.ok) throw new Error("Cart fetch failed");
+  return res.json();
 }
-export function removeFromCart(id: string) { setCart(getCart().filter(x => x.id !== id)); }
-export function total() { return getCart().reduce((s,x)=>s+x.price*x.qty, 0); }
+
+export async function addToCart(productId: number, quantity = 1) {
+  const res = await fetch(`${API_URL}/cart/add-item`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: productId, quantity }),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error("Add to cart failed");
+  return res.json();
+}
+
+export async function removeFromCart(itemKey: string) {
+  const res = await fetch(`${API_URL}/cart/remove-item/${itemKey}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  return res.ok;
+}
+
+export async function getCart() {
+  try {
+    return await getCartFromWoo();
+  } catch (e) {
+    console.error("Cart fetch error", e);
+    return { items: [] };
+  }
+}
